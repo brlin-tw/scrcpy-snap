@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Fix the runtime environment needed by the snapped application
 #
-# Copyright 2025 林博仁(Buo-ren, Lin) <buo.ren.lin@gmail.com>
+# Copyright 2026 林博仁(Buo-ren, Lin) <buo.ren.lin@gmail.com>
 # SPDX-License-Identifier: Apache-2.0
 
 # Enable the notice window if the environment variable is set
@@ -145,4 +145,13 @@ if ! snapctl is-connected joystick; then
     fi
 fi
 
-exec "${@}"
+if ! snapctl is-connected scrcpy-runtime-2404; then
+    printf \
+        '=========================\nThe scrcpy runtime content snap is not installed or connected by this snap.\n\nYou may do so by running the following command in a terminal:\n\n    sudo snap install scrcpy-runtime-2404\n    sudo snap connect scrcpy:scrcpy-runtime-2404 scrcpy-runtime-2404:scrcpy-runtime-2404\n\nNOTE: A graphical notice is displayed with a timeout in the meantime, to skip it, set the environment variable SNAP_LAUNCHER_NOTICE_ENABLED to "false".\n=========================\n' \
+        1>&2
+    exit 1
+fi
+
+scrcpy="${SNAP}/scrcpy-runtime/usr/local/bin/scrcpy"
+
+exec "${scrcpy}" "${@}"

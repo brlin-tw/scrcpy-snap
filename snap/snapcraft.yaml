@@ -27,7 +27,7 @@ license: Apache-2.0
 grade: stable
 confinement: strict
 compression: lzo
-version: 5.0.1
+version: scrcpy-runtime-2404
 
 base: core24
 
@@ -48,15 +48,19 @@ plugs:
     target: $SNAP/ffmpeg-platform
     default-provider: ffmpeg-2404
 
+  scrcpy-runtime-2404:
+    interface: content
+    target: $SNAP/scrcpy-runtime
+    default-provider: scrcpy-runtime-2404
+
 apps:
   scrcpy:
-    command: usr/local/bin/scrcpy
-    command-chain:
-      - bin/scrcpy-launch
+    command: bin/scrcpy-launch
     completer: usr/local/share/bash-completion/completions/scrcpy
     desktop: usr/local/share/applications/scrcpy.desktop
     environment: &scrcpy-env
-      LD_LIBRARY_PATH: ${SNAP}/ffmpeg-platform/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}:${SNAP}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/android:${SNAP}/usr/local/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}:${SNAP}/usr/local/lib:${SNAP}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}:${SNAP}/usr/lib:${LD_LIBRARY_PATH}
+      LD_LIBRARY_PATH: ${SNAP}/scrcpy-runtime/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}:${SNAP}/scrcpy-runtime/usr/local/lib:${SNAP}/ffmpeg-platform/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}:${SNAP}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/android:${SNAP}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}:${LD_LIBRARY_PATH}
+      PATH: ${SNAP}/scrcpy-runtime/usr/local/bin:${PATH}
     plugs: &scrcpy-plugs
       # For running the Android Debug Bridge (adb) and
       # connecting the Android devices over USB or TCP/IP.
@@ -92,9 +96,7 @@ apps:
       - gnome
 
   console:
-    command: usr/local/bin/scrcpy
-    command-chain:
-      - bin/scrcpy-launch
+    command: bin/scrcpy-launch
     completer: usr/local/share/bash-completion/completions/scrcpy
     desktop: usr/local/share/applications/scrcpy-console.desktop
     environment: *scrcpy-env
@@ -123,140 +125,25 @@ layout:
   # This fixes the "ERROR: Could not open icon image: /usr/local/share/icons/hicolor/256x256/apps/scrcpy.png"
   # error at runtime.
   /usr/local/share/icons:
-    symlink: $SNAP/usr/local/share/icons
+    symlink: $SNAP/scrcpy-runtime/usr/local/share/icons
   # This allows scrcpy to locate the scrcpy-server binary.
   # "ERROR: '/usr/local/share/scrcpy/scrcpy-server' does not exist or is not a regular file"
   /usr/local/share/scrcpy:
-    symlink: $SNAP/usr/local/share/scrcpy
-
+    symlink: $SNAP/scrcpy-runtime/usr/local/share/scrcpy
   /usr/share/alsa:
     bind: $SNAP/usr/share/alsa
 
 parts:
-  scrcpy-server:
+  scrcpy-assets:
     plugin: nil
-    build-packages:
-      - curl
-      - jq
-    override-pull: >-
-      SCRCPY_SERVER_VERSION="${SNAPCRAFT_PROJECT_VERSION}"
-      "${CRAFT_PROJECT_DIR}/snap/local/scriptlets/pull-scrcpy-server.sh"
-    override-build: |
-      mkdir -p "${SNAPCRAFT_PART_INSTALL}/usr/local/share/scrcpy"
-      cp scrcpy-server-v* "${SNAPCRAFT_PART_INSTALL}/usr/local/share/scrcpy/scrcpy-server"
-
-  sdl3:
-    source: https://github.com/libsdl-org/SDL.git
-    source-tag: release-3.4.12
-    plugin: cmake
-    cmake-parameters:
-      - -DCMAKE_BUILD_TYPE=Release
-      - -DCMAKE_INSTALL_PREFIX=/usr/local
-      - -DSDL_TESTS=OFF
-      - -DSDL_STATIC=OFF
-      - -DSDL_SHARED=ON
-    build-packages:
-      - cmake
-      - libasound2-dev
-      - libdecor-0-dev
-      - libdrm-dev
-      - libegl1-mesa-dev
-      - libgbm-dev
-      - libgl1-mesa-dev
-      - libgles2-mesa-dev
-      - libibus-1.0-dev
-      - libpipewire-0.3-dev
-      - libpulse-dev
-      - libudev-dev
-      - libwayland-dev
-      - libx11-dev
-      - libxcursor-dev
-      - libxext-dev
-      - libxfixes-dev
-      - libxi-dev
-      - libxkbcommon-dev
-      - libxrandr-dev
-      - libxss-dev
-      - libxtst-dev
-      - ninja-build
-
-  scrcpy:
-    after:
-      - sdl3
-    source: https://github.com/Genymobile/scrcpy.git
-    source-tag: v$SNAPCRAFT_PROJECT_VERSION
-    plugin: meson
-    meson-parameters:
-      - --buildtype=release
-      - --strip
-      - -Db_lto=true
-      - -Dcompile_server=false
     build-snaps:
-      - ffmpeg-2404-sdk
-    build-environment:
-      - PKG_CONFIG_PATH: $CRAFT_STAGE/usr/local/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pkgconfig:$CRAFT_STAGE/usr/local/lib/pkgconfig:$CRAFT_STAGE/usr/local/share/pkgconfig:/snap/ffmpeg-2404-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}
-      - LD_LIBRARY_PATH: $CRAFT_STAGE/usr/local/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$CRAFT_STAGE/usr/local/lib:/snap/ffmpeg-2404-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
-      - PATH: /snap/ffmpeg-2404-sdk/current/usr/bin${PATH:+:$PATH}
-    # https://github.com/Genymobile/scrcpy/blob/master/doc/build.md#debianubuntu
-    build-packages:
-      - gcc
-      - git
-      - libusb-1.0-0-dev
-      - libv4l-dev
-      - meson
-      - ninja-build
-      - pkg-config
+      - scrcpy-runtime-2404
+    override-build: |
+      mkdir -p "${CRAFT_PART_INSTALL}/usr/local/share/applications"
+      cp -a /snap/scrcpy-runtime-2404/current/usr/local/share/applications/*.desktop "${CRAFT_PART_INSTALL}/usr/local/share/applications/"
 
-      # Provided by the FFmpeg SDK content snap
-      #- libavcodec-dev
-      #- libavdevice-dev
-      #- libavformat-dev
-      #- libavutil-dev
-      #- libswresample-dev
-    override-build: "${CRAFT_PROJECT_DIR}/snap/local/scriptlets/build-scrcpy.sh"
-    stage-packages:
-      - libasound2
-      - libblas3
-      - libslang2
-      - libusb-1.0-0
-    stage:
-      - -usr/lib/*/libcaca++.so*
-      - -usr/lib/*/libcairo-gobject.so*
-      - -usr/lib/*/libcairo.so*
-      - -usr/lib/*/libcjson_utils.so*
-      - -usr/lib/*/libfftw3_omp.so*
-      - -usr/lib/*/libfftw3_threads.so*
-      - -usr/lib/*/libflite_cmu_grapheme_lang.so*
-      - -usr/lib/*/libflite_cmu_grapheme_lex.so*
-      - -usr/lib/*/libflite_cmu_indic_lang.so*
-      - -usr/lib/*/libflite_cmu_indic_lex.so*
-      - -usr/lib/*/libflite_cmu_time_awb.so*
-      - -usr/lib/*/libgdk_pixbuf-*.so*
-      - -usr/lib/*/libharfbuzz.so*
-      - -usr/lib/*/libhwy_contrib.so*
-      - -usr/lib/*/libhwy_test.so*
-      - -usr/lib/*/libicui18n.so*
-      - -usr/lib/*/libicuio.so*
-      - -usr/lib/*/libicutest.so*
-      - -usr/lib/*/libicutu.so*
-      - -usr/lib/*/libjacknet.so*
-      - -usr/lib/*/libjackserver.so*
-      - -usr/lib/*/liboss4-salsa.so*
-      - -usr/lib/*/libpango-*.so*
-      - -usr/lib/*/libpangocairo-*.so*
-      - -usr/lib/*/libpangoft*.so*
-      - -usr/lib/*/libpixman-*.so*
-      - -usr/lib/*/libpulse-simple.so*
-      - -usr/lib/*/librsvg*.so*
-      - -usr/lib/*/libsphinxad.so*
-      - -usr/lib/*/libtheora.so*
-      - -usr/lib/*/libzvbi-chains.so*
-      - -usr/share/fonts
-
-      # Provided by the mesa-2404 content snap
-      - -usr/lib/*/libdrm_amdgpu.so*
-      - -usr/lib/*/libdrm_intel.so*
-      - -usr/lib/*/libgallium-*.so*
+      mkdir -p "${CRAFT_PART_INSTALL}/usr/local/share/bash-completion/completions"
+      cp -a /snap/scrcpy-runtime-2404/current/usr/local/share/bash-completion/completions/* "${CRAFT_PART_INSTALL}/usr/local/share/bash-completion/completions/"
 
   adb:
     plugin: nil
@@ -328,9 +215,8 @@ parts:
 
   gpu-2404:
     after:
+      - scrcpy-assets
       - launchers-notice
-      - scrcpy
-      - sdl3
     source: https://github.com/canonical/gpu-snap.git
     plugin: dump
     override-prime: |
