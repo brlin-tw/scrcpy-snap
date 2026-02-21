@@ -149,6 +149,28 @@ if ! snapctl is-connected scrcpy-runtime-2404; then
     printf \
         '=========================\nThe scrcpy runtime content snap is not installed or connected by this snap.\n\nYou may do so by running the following command in a terminal:\n\n    sudo snap install scrcpy-runtime-2404\n    sudo snap connect scrcpy:scrcpy-runtime-2404 scrcpy-runtime-2404:scrcpy-runtime-2404\n\nNOTE: A graphical notice is displayed with a timeout in the meantime, to skip it, set the environment variable SNAP_LAUNCHER_NOTICE_ENABLED to "false".\n=========================\n' \
         1>&2
+
+    if test "${SNAP_LAUNCHER_NOTICE_ENABLED}" = "true"; then
+        "${SNAP}/bin/runtime-snap-connection-notice" && ret="${?}" || ret="${?}"
+
+        case "${ret}" in
+            0)
+                # User pressed ENTER, continuing...
+                ;;
+            1)
+                # User bailed out
+                exit 1
+                ;;
+            2)
+                printf "Dialog timed out, continuing...\n"
+                ;;
+            *)
+                # Unknown error
+                printf "FATAL: Unknown runtime-snap-connection-notice exit status: %d\n" "${ret}" 1>&2
+                exit 99
+                ;;
+        esac
+    fi
     exit 1
 fi
 

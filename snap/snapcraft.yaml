@@ -183,7 +183,8 @@ parts:
 
       for notice in \
         unofficial-snap-notice \
-        manual-interface-notice; do
+        manual-interface-notice \
+        runtime-snap-connection-notice; do
         # NOTE: The lack of quotes around the `pkg-config` command substitution is intentional.
         gcc \
           -o "${SNAPCRAFT_PART_INSTALL}/bin/${notice}" \
