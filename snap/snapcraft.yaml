@@ -263,6 +263,8 @@ parts:
       - libudev1
       - libusb-1.0-0
       - libzstd1
+    stage:
+      - -usr/lib/x86_64-linux-gnu/libpsx.so*
 
   # Launcher programs to fix problems at runtime
   launchers:
