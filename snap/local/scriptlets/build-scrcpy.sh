@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Override the logic of the build step of the scrcpy snapcraft part
 #
-# Copyright 2025 Buo-ren Lin <buo.ren.lin@gmail.com>
+# Copyright 2025 林博仁(Buo-ren Lin) <buo.ren.lin@gmail.com>
 # SPDX-License-Identifier: Apache-2.0
 
 if ! set -eu; then

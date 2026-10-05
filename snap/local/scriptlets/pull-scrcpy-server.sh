@@ -2,7 +2,7 @@
 # Pull the scrcpy-server part, which has to be the same version with the main
 # part
 #
-# Copyright 2024 林博仁(Buo-ren, Lin) <buo.ren.lin@gmail.com>
+# Copyright 2024 林博仁(Buo-ren Lin) <buo.ren.lin@gmail.com>
 # SPDX-License-Identifier: Apache-2.0
 
 # The version of prebuilt scrcpy-server to pull
