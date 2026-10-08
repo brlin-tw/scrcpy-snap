@@ -301,7 +301,10 @@ parts:
       craftctl default
       mkdir -p "${SNAPCRAFT_PART_INSTALL}/bin"
 
-      for notice in collaborator-change-notice manual-interface-notice; do
+      for notice in \
+        unofficial-snap-notice \
+        collaborator-change-notice \
+        manual-interface-notice; do
         # NOTE: The lack of quotes around the `pkg-config` command substitution is intentional.
         gcc \
           -o "${SNAPCRAFT_PART_INSTALL}/bin/${notice}" \
