@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
     }
 
     SDL_Window *win = SDL_CreateWindow(
-        "Notice", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+        "Missing security confinement interface connection notice", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN
     );
     if (!win) {
