@@ -10,3 +10,6 @@
 
 # Don't track plain text files which is used for saving command output
 *.txt
+
+# Don't track unpacked snap packages
+/squashfs-root
