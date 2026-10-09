@@ -28,7 +28,7 @@ installation_indicator="${SNAP_USER_DATA}/.android"
 if ! test -e "${installation_indicator}"; then
     if test "${SNAP_LAUNCHER_NOTICE_ENABLED}" = "true"; then
         printf \
-            '=========================\nHello!\n\nThis application is an unofficial distribution of scrcpy.\n\nTo minimize upstream annoyance, please DO NOT report snap-specific issues to the upstream scrcpy issue tracker.  Instead, report any problems to this snap'\''s issue tracker:\n\n    <https://github.com/sisco311/scrcpy-snap/issues>\n\nNOTE: A graphical notice is displayed with a timeout in the meantime, to skip it, set the environment variable SNAP_LAUNCHER_NOTICE_ENABLED to "false".\n=========================\n' 1>&2
+            '=========================\nHello!\n\nThis application is an unofficial distribution of scrcpy.\n\nTo minimize upstream annoyance, please DO NOT report snap-specific issues to the upstream scrcpy issue tracker.  Instead, report any problems to this snap'\''s issue tracker:\n\n    <https://github.com/brlin-tw/scrcpy-snap/issues>\n\nNOTE: A graphical notice is displayed with a timeout in the meantime, to skip it, set the environment variable SNAP_LAUNCHER_NOTICE_ENABLED to "false".\n=========================\n' 1>&2
 
         "${SNAP}/bin/unofficial-snap-notice" && ret="${?}" || ret="${?}"
 

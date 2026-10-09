@@ -45,7 +45,7 @@ For example, to list the devices available to the snap, you can run the followin
 
     scrcpy.adb devices
 
-Using other adb installations (e.g., the one provided by your distribution) to interact with the adb server launched by the snap is _not_ supported and may lead to unexpected behaviors, refer to [Consider adding more documentation about when and how to use scrcpy.adb · Issue #21 · sisco311/scrcpy-snap](https://github.com/sisco311/scrcpy-snap/issues/21) for more information.
+Using other adb installations (e.g., the one provided by your distribution) to interact with the adb server launched by the snap is _not_ supported and may lead to unexpected behaviors, refer to [Consider adding more documentation about when and how to use scrcpy.adb · Issue #21 · brlin-tw/scrcpy-snap](https://github.com/brlin-tw/scrcpy-snap/issues/21) for more information.
 
 If you need to shutdown the adb server launched by the snap (e.g. to run another adb server or to allow the snap to be updated), you can do so by running:
 
