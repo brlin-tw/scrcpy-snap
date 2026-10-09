@@ -2,24 +2,6 @@ name: scrcpy
 title: scrcpy [unofficial]
 summary: Display and control your Android device
 description: |
-  **Important notice**
-
-  Due to a misconfiguration at the store-side, this snap will not be automatically connected to the runtime snaps required for its proper operation.
-
-  In the meantime, please manually run the following commands in a terminal to connect the required runtime snaps:
-
-      sudo snap connect scrcpy:gpu-2404 mesa-2404:gpu-2404
-      sudo snap connect scrcpy:gnome-46-2404 gnome-46-2404:gnome-46-2404
-      sudo snap connect scrcpy:ffmpeg-2404 ffmpeg-2404:ffmpeg-2404
-      sudo snap disable scrcpy
-      sudo snap enable scrcpy
-
-  Refer to the following GitHub issue for more information:
-
-  https://github.com/brlin-tw/scrcpy-snap/issues/66
-
-  ---
-
   This application provides display and control of Android devices connected on USB (or over TCP/IP). It does not require any root access.  It works on GNU/Linux, Windows and MacOS.
 
   This is an unofficial scrcpy distribution.  Please report any issues to the snap's own issue tracker: https://github.com/sisco311/scrcpy-snap/issues
