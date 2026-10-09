@@ -2,11 +2,22 @@ name: scrcpy
 title: scrcpy (UNOFFICIAL)
 summary: Display and control your Android device
 description: |
-  This application provides display and control of Android devices connected on USB (or over TCP/IP). It does not require any root access.  It works on GNU/Linux, Windows and MacOS.
+  This application mirrors Android devices (video and audio) connected
+  via USB or TCP/IP and allows control using the computer's keyboard and
+  mouse. It does not require root access or an app installed on the
+  device.
 
-  This is an unofficial scrcpy distribution.  Please report any issues to the snap's own issue tracker: https://github.com/brlin-tw/scrcpy-snap/issues
+  See https://github.com/Genymobile/scrcpy for more information.
 
-  The source code of scrcpy itself can be found at: https://github.com/Genymobile/scrcpy
+  **Snap publisher notice**
+
+  This is an unofficial distribution of scrcpy.  Please report any
+  issues of the usage of this snap to the snap's own issue tracker:
+
+  https://github.com/brlin-tw/scrcpy-snap/issues
+
+  Thank you!
+
 contact: https://github.com/brlin-tw/scrcpy-snap/issues
 issues: https://github.com/brlin-tw/scrcpy-snap/issues
 source-code: https://github.com/brlin-tw/scrcpy-snap
