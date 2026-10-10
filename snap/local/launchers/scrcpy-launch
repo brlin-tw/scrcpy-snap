@@ -147,7 +147,6 @@ fi
 
 if ! "${@}"; then
     printf "Warning: Application returned non-zero exit status %s.\n" "${?}" 1>&2
-    exit 1
 fi
 
 if pgrep --full 'adb.*fork-server' >/dev/null; then
