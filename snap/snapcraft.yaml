@@ -155,8 +155,10 @@ parts:
     plugin: cmake
     cmake-parameters:
       - -DCMAKE_BUILD_TYPE=Release
-      - -DCMAKE_INSTALL_PREFIX=/usr/local
+      - -DCMAKE_INSTALL_PREFIX=/usr
+      - -DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}
       - -DSDL_TESTS=OFF
+      - -DSDL_TEST_LIBRARY=OFF
       - -DSDL_STATIC=OFF
       - -DSDL_SHARED=ON
     build-packages:
@@ -183,6 +185,12 @@ parts:
       - libxss-dev
       - libxtst-dev
       - ninja-build
+    stage:
+      - usr/include
+      - usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/libSDL3.so*
+      - usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/pkgconfig
+    prime:
+      - usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/libSDL3.so*
 
   scrcpy:
     after:
@@ -198,8 +206,8 @@ parts:
     build-snaps:
       - ffmpeg-2404-sdk
     build-environment:
-      - PKG_CONFIG_PATH: $CRAFT_STAGE/usr/local/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pkgconfig:$CRAFT_STAGE/usr/local/lib/pkgconfig:$CRAFT_STAGE/usr/local/share/pkgconfig:/snap/ffmpeg-2404-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}
-      - LD_LIBRARY_PATH: $CRAFT_STAGE/usr/local/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$CRAFT_STAGE/usr/local/lib:/snap/ffmpeg-2404-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
+      - PKG_CONFIG_PATH: $CRAFT_STAGE/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pkgconfig:/snap/ffmpeg-2404-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}
+      - LD_LIBRARY_PATH: $CRAFT_STAGE/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:/snap/ffmpeg-2404-sdk/current/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
       - PATH: /snap/ffmpeg-2404-sdk/current/usr/bin${PATH:+:$PATH}
     # https://github.com/Genymobile/scrcpy/blob/master/doc/build.md#debianubuntu
     build-packages:
