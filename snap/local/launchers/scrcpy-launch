@@ -145,4 +145,14 @@ if ! snapctl is-connected joystick; then
     fi
 fi
 
-exec "${@}"
+if ! "${@}"; then
+    printf "Warning: Application returned non-zero exit status %s.\n" "${?}" 1>&2
+    exit 1
+fi
+
+if pgrep --full 'adb.*fork-server' >/dev/null; then
+    if ! adb kill-server; then
+        printf "Warning: Failed to stop ADB server.\n" 1>&2
+        exit 1
+    fi
+fi
