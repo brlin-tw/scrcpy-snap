@@ -154,7 +154,7 @@ parts:
 
   sdl3:
     source: https://github.com/libsdl-org/SDL.git
-    source-tag: release-3.4.12
+    source-tag: release-3.4.18
     plugin: cmake
     cmake-parameters:
       - -DCMAKE_BUILD_TYPE=Release
